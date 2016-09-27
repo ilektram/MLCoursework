@@ -5,12 +5,12 @@ from helperFunctions import preprocess, stratified_split, training_testing_sets,
 
 # Read data
 act_train_df = pd.read_csv('act_train.csv')
-#print(act_train_df.columns)
+# print(act_train_df.columns)
 people_df = pd.read_csv('people.csv')
-#print(people_df.columns)
+# print(people_df.columns)
 # Merge datasets based on people ID
 merged_df = pd.merge(act_train_df, people_df, on='people_id')
-#print(merged_df.columns)
+# print(merged_df.columns)
 
 col_list = ['activity_category', 'char_1_x',
        'char_2_x', 'char_3_x', 'char_4_x', 'char_5_x', 'char_6_x', 'char_7_x',
@@ -31,4 +31,4 @@ X_train, X_test, y_train, y_test = training_testing_sets(merged_df, col_list)
 ###############################################################################
 
 # Train logistic regression on training set after hyperparameter optimisation
-logistic_Model = logistic_model_search(X_train, y_train)
+logistic_Model, logistic_Grid = logistic_model_search(X_train, y_train)

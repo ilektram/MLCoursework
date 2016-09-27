@@ -52,9 +52,11 @@ def logistic_model_search(X_train, y_train):
                                        fit_params=None,
                                        cv=5,
                                        verbose=10,
-                                       error_score='raise')
+                                       error_score='raise',
+                                       n_jobs=10,
+                                       pre_dispatch=20)
 
-    logistic_gridSearch = logistic_gridSearch.fit(X_train, y_train)
+    logistic_Model = logistic_gridSearch.fit(X_train, y_train)
 
     print("Logistic Regression Parameter Fitting: ", logistic_gridSearch.grid_scores_)
     print("Logistic Regression Best Estimator: ", logistic_gridSearch.best_estimator_)
@@ -62,5 +64,5 @@ def logistic_model_search(X_train, y_train):
     print("Logistic Regression Best Parameters: ", logistic_gridSearch.best_params_)
     print("Logistic Regression Scorer: ", logistic_gridSearch.scorer_)
 
-    return logistic_gridSearch
+    return logistic_Model, logistic_gridSearch
 
