@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.cross_validation import StratifiedShuffleSplit, train_test_split
+from sklearn import linear_model, decomposition, datasets
+from sklearn.grid_search import GridSearchCV
 
 
 # Swiss army knife function to organize the data

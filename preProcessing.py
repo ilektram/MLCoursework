@@ -6,7 +6,6 @@
 
 import numpy as np
 import pandas as pd
-from sklearn.grid_search import GridSearchCV
 import matplotlib.pyplot as plt
 
 from dateutil.parser import parse
