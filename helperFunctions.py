@@ -19,13 +19,14 @@ def preprocess(df, col_list):
     return df, classes
 
 
-def training_testing_sets(df):
+def training_testing_sets(df, col_list):
     X = df[col_list]
     y = df['outcome']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+    return X_train, X_test, y_train, y_test
 
 
-def stratified_split(df):
+def stratified_split(df, col_list):
     sss = StratifiedShuffleSplit(df, 10, test_size=0.3, random_state=23)
     X = df[col_list]
     y = df['outcome']

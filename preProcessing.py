@@ -6,25 +6,31 @@
 
 import numpy as np
 import pandas as pd
+from sklearn.grid_search import GridSearchCV
 import matplotlib.pyplot as plt
 
 from dateutil.parser import parse
 from sklearn import linear_model, decomposition, datasets
 from sklearn.pipeline import Pipeline
 from sklearn.grid_search import GridSearchCV
-from helperFunctions import preprocess, stratified_split
+from helperFunctions import preprocess, stratified_split, training_testing_sets
 
 
-logistic = linear_model.LogisticRegression()
+logistic = linear_model.LogisticRegression(verbose=True, class_weight='balanced', random_state=0, solver='liblinear')
+logistic_param_grid = {
+                            'tolerance': np.ndarray(0, 5, .5),
+                            'C': [.1, .5, 1, 1.1, 1.5, 5, 10],
+                            'max_iter': np.ndarray(100, 500, 100),
+                            'penalty': ['l1', 'l2']
+}
 
-# pipe = Pipeline(steps=[('pca', pca), ('logistic', logistic)])
 
 act_train_df = pd.read_csv('act_train.csv')
-print(act_train_df.columns)
+#print(act_train_df.columns)
 people_df = pd.read_csv('people.csv')
-print(people_df.columns)
+#print(people_df.columns)
 merged_df = pd.merge(act_train_df, people_df, on='people_id')
-print(merged_df.columns)
+#print(merged_df.columns)
 
 col_list = ['activity_category', 'char_1_x',
        'char_2_x', 'char_3_x', 'char_4_x', 'char_5_x', 'char_6_x', 'char_7_x',
@@ -38,5 +44,16 @@ col_list = ['activity_category', 'char_1_x',
        'char_37', 'char_38']
 
 merged_df, classes = preprocess(merged_df, col_list)
-print(stratified_split(merged_df))
+X_train, X_test, y_train, y_test = training_testing_sets(merged_df, col_list)
 ###############################################################################
+
+
+logistic_gridSearch = GridSearchCV(logistic,
+                                   logistic_param_grid,
+                                   scoring=None,
+                                   fit_params=None,
+                                   cv=10,
+                                   verbose=1,
+                                   error_score='raise')
+
+print("Logistic Regression Parameter Fitting: ", logistic_gridSearch.grid_scores_)
