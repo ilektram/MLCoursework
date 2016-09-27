@@ -16,12 +16,12 @@ from sklearn.grid_search import GridSearchCV
 from helperFunctions import preprocess, stratified_split, training_testing_sets
 
 
-logistic = linear_model.LogisticRegression(verbose=True, class_weight='balanced', random_state=0, solver='liblinear')
+logistic = linear_model.LogisticRegression(verbose=True, class_weight='balanced', random_state=0, penalty='l2')
 logistic_param_grid = {
-                            'tolerance': np.arange(0, 5, .5),
+                            'tol': np.arange(0, 5, .5),
                             'C': [.1, .5, 1, 1.1, 1.5, 5, 10],
                             'max_iter': np.arange(100, 500, 100),
-                            'penalty': ['l1', 'l2']
+                            'solver': ['newton-cg', 'lbfgs', 'sag']
 }
 
 
