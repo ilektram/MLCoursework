@@ -33,3 +33,32 @@ def stratified_split(df, col_list):
     for train_index, test_index in sss:
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
+
+
+def logistic_model_search(X_train, y_train):
+    logistic = linear_model.LogisticRegression(verbose=True, class_weight='balanced', random_state=0, penalty='l2')
+
+    logistic_param_grid = {
+                            'tol': np.arange(0, 5, .5),
+                            'C': [.1, .5, 1, 1.1, 1.5, 5, 10],
+                            'max_iter': np.arange(100, 500, 100),
+                            'solver': ['newton-cg', 'lbfgs', 'sag']
+    }
+    logistic_gridSearch = GridSearchCV(logistic,
+                                       logistic_param_grid,
+                                       scoring=None,
+                                       fit_params=None,
+                                       cv=5,
+                                       verbose=10,
+                                       error_score='raise')
+
+    logistic_gridSearch.fit(X_train, y_train)
+
+    print("Logistic Regression Parameter Fitting: ", logistic_gridSearch.grid_scores_)
+    print("Logistic Regression Best Estimator: ", logistic_gridSearch.best_estimator_)
+    print("Logistic Regression Best Score: ", logistic_gridSearch.best_score_)
+    print("Logistic Regression Best Parameters: ", logistic_gridSearch.best_params_)
+    print("Logistic Regression Scorer: ", logistic_gridSearch.scorer_)
+
+    return logistic_gridSearch
+

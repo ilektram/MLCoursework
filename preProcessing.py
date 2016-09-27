@@ -13,16 +13,7 @@ from dateutil.parser import parse
 from sklearn import linear_model, decomposition, datasets
 from sklearn.pipeline import Pipeline
 from sklearn.grid_search import GridSearchCV
-from helperFunctions import preprocess, stratified_split, training_testing_sets
-
-
-logistic = linear_model.LogisticRegression(verbose=True, class_weight='balanced', random_state=0, penalty='l2')
-logistic_param_grid = {
-                            'tol': np.arange(0, 5, .5),
-                            'C': [.1, .5, 1, 1.1, 1.5, 5, 10],
-                            'max_iter': np.arange(100, 500, 100),
-                            'solver': ['newton-cg', 'lbfgs', 'sag']
-}
+from helperFunctions import preprocess, stratified_split, training_testing_sets, logistic_model_search
 
 
 act_train_df = pd.read_csv('act_train.csv')
@@ -44,17 +35,9 @@ col_list = ['activity_category', 'char_1_x',
        'char_37', 'char_38']
 
 merged_df, classes = preprocess(merged_df, col_list)
+
 X_train, X_test, y_train, y_test = training_testing_sets(merged_df, col_list)
 ###############################################################################
 
 
-logistic_gridSearch = GridSearchCV(logistic,
-                                   logistic_param_grid,
-                                   scoring=None,
-                                   fit_params=None,
-                                   cv=10,
-                                   verbose=1,
-                                   error_score='raise')
-
-logistic_gridSearch.fit(X_train, y_train)
-print("Logistic Regression Parameter Fitting: ", logistic_gridSearch.grid_scores_)
+logistic_Model = logistic_model_search(X_train, y_train)
