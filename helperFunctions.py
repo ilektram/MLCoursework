@@ -43,7 +43,7 @@ def logistic_model_search(X_train, y_train):
     logistic_param_grid = {
                             'tol': np.arange(0, 5, .5),
                             'C': [.1, .5, 1, 1.1, 1.5, 5, 10],
-                            'max_iter': np.arange(100, 500, 1000, 5000),
+                            'max_iter': np.arange(100, 500, 1000),
                             'solver': ['newton-cg', 'lbfgs', 'sag']
     }
     logistic_gridSearch = GridSearchCV(logistic,
