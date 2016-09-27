@@ -56,8 +56,8 @@ def logistic_model_search(X_train, y_train):
                                        cv=5,
                                        verbose=10,
                                        error_score='raise',
-                                       n_jobs=5,
-                                       pre_dispatch=10)
+                                       n_jobs=3,
+                                       pre_dispatch=6)
     # Run hyperparameter optimisation
     logistic_gridSearch.fit(X_train, y_train)
     # Print test results
