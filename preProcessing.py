@@ -18,9 +18,9 @@ from helperFunctions import preprocess, stratified_split, training_testing_sets
 
 logistic = linear_model.LogisticRegression(verbose=True, class_weight='balanced', random_state=0, solver='liblinear')
 logistic_param_grid = {
-                            'tolerance': np.ndarray(0, 5, .5),
+                            'tolerance': np.arange(0, 5, .5),
                             'C': [.1, .5, 1, 1.1, 1.5, 5, 10],
-                            'max_iter': np.ndarray(100, 500, 100),
+                            'max_iter': np.arange(100, 500, 100),
                             'penalty': ['l1', 'l2']
 }
 
@@ -56,4 +56,5 @@ logistic_gridSearch = GridSearchCV(logistic,
                                    verbose=1,
                                    error_score='raise')
 
+logistic_gridSearch.fit(X_train, y_train)
 print("Logistic Regression Parameter Fitting: ", logistic_gridSearch.grid_scores_)
