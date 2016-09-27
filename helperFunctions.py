@@ -52,7 +52,7 @@ def logistic_model_search(X_train, y_train):
                                        verbose=10,
                                        error_score='raise')
 
-    logistic_gridSearch.fit(X_train, y_train)
+    logistic_gridSearch = logistic_gridSearch.fit(X_train, y_train)
 
     print("Logistic Regression Parameter Fitting: ", logistic_gridSearch.grid_scores_)
     print("Logistic Regression Best Estimator: ", logistic_gridSearch.best_estimator_)
