@@ -5,6 +5,8 @@ from sklearn.cross_validation import StratifiedShuffleSplit, train_test_split
 from sklearn import linear_model, decomposition, datasets
 from sklearn.grid_search import GridSearchCV
 
+from sklearn.externals import joblib
+
 
 # Swiss army knife function to organize the data
 def encode(df, col_list):
@@ -39,13 +41,14 @@ def stratified_split(df, col_list):
 
 def logistic_model_search(X_train, y_train):
     logistic = linear_model.LogisticRegression(verbose=True, class_weight='balanced', random_state=0, penalty='l2')
-
+    # Define parameters to search through
     logistic_param_grid = {
                             'tol': np.arange(0, 5, .5),
                             'C': [.1, .5, 1, 1.1, 1.5, 5, 10],
                             'max_iter': np.arange(100, 500, 1000),
                             'solver': ['newton-cg', 'lbfgs', 'sag']
     }
+    # Split training data to training/validation sets and test hyperparameters
     logistic_gridSearch = GridSearchCV(logistic,
                                        logistic_param_grid,
                                        scoring=None,
@@ -53,16 +56,18 @@ def logistic_model_search(X_train, y_train):
                                        cv=5,
                                        verbose=10,
                                        error_score='raise',
-                                       n_jobs=10,
-                                       pre_dispatch=20)
-
-    logistic_Model = logistic_gridSearch.fit(X_train, y_train)
-
+                                       n_jobs=5,
+                                       pre_dispatch=10)
+    # Run hyperparameter optimisation
+    logistic_gridSearch.fit(X_train, y_train)
+    # Print test results
     print("Logistic Regression Parameter Fitting: ", logistic_gridSearch.grid_scores_)
     print("Logistic Regression Best Estimator: ", logistic_gridSearch.best_estimator_)
     print("Logistic Regression Best Score: ", logistic_gridSearch.best_score_)
     print("Logistic Regression Best Parameters: ", logistic_gridSearch.best_params_)
     print("Logistic Regression Scorer: ", logistic_gridSearch.scorer_)
 
-    return logistic_Model, logistic_gridSearch
+    # Save as pickle
+    joblib.dump(logistic_gridSearch, 'logisticModel.pkl')
+    return logistic_gridSearch
 

@@ -28,7 +28,6 @@ merged_df, classes = preprocess(merged_df, col_list)
 
 # Split to training & testing set
 X_train, X_test, y_train, y_test = training_testing_sets(merged_df, col_list)
-###############################################################################
 
 # Train logistic regression on training set after hyperparameter optimisation
-logistic_Model, logistic_Grid = logistic_model_search(X_train, y_train)
+logistic_Model = logistic_model_search(X_train, y_train)
